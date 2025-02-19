@@ -6,8 +6,6 @@ const BASIC_AUTH_PASSWORD = process.env.BASIC_AUTH_PASSWORD;
 export const basicAuth = (req: Request, res: Response, next: NextFunction): void => {
     const authHeader = req.headers.authorization;
 
-    console.log(BASIC_AUTH_PASSWORD);
-
     if (!authHeader || !authHeader.startsWith("Basic ")) {
         res.status(401).json({ message: "Unauthorized: Missing authentication header" });
         return;
