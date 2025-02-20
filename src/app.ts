@@ -28,4 +28,9 @@ app.get('/testing', (req, res) => {
     })
 })
 
+app.all("*", (req, res) => {
+    console.warn(`⚠️ Route not found: ${req.method} ${req.originalUrl}`);
+    res.status(404).json({ message: `Route ${req.originalUrl} not found!` });
+});
+
 export default app;

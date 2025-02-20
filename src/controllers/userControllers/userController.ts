@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Blog, { IBlog } from "../../models/blogModel";
+import { blogIdSchema } from "../../utils/validations/v1UserValidations/userValidations";
 // import redisClient from "../../utils/redisClient";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
@@ -8,7 +9,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
         res.status(200).json(blogPosts);
     } catch (error) {
         console.log("🚀 ~ getAllBlogs ~ error:", error)
-        res.status(500).json({ message: "Please try after sometime." })
+        res.status(500).json({ message: "Internal server error!" })
     }
 };
 
@@ -42,7 +43,7 @@ export const getBlogsCatalog = async (req: Request, res: Response): Promise<void
         res.status(200).json(modifiedResponse);
     } catch (error) {
         console.error("🚀 ~ getBlogsCatalog ~ error:", error);
-        res.status(500).json({ message: "Please try again later." });
+        res.status(500).json({ message: "Internal server error!" });
     }
 };
 
@@ -80,3 +81,35 @@ export const getBlogsCatalog = async (req: Request, res: Response): Promise<void
 //         res.status(500).json({ message: "Please try again later." });
 //     }
 // };
+
+
+export const getBlogById = async (req: Request, res: Response): Promise<void> => {
+    try {
+
+        if (!req.params.blogId) {
+            res.status(400).json({ message: "Blog ID is required in the URL!" });
+            return;
+        }
+
+        const validation = blogIdSchema.safeParse(req.params);
+
+        if (!validation.success) {
+            res.status(400).json({ message: validation.error.errors[0].message });
+            return;
+        }
+
+        const { blogId } = validation.data;
+
+        const blog = await Blog.findById(blogId).lean();
+
+        if (!blog) {
+            res.status(404).json({ message: "Blog not found!" });
+            return;
+        }
+
+        res.status(200).json(blog);
+    } catch (error) {
+        console.error("🚀 ~ Error fetching blog:", error);
+        res.status(500).json({ message: "Internal server error!" });
+    }
+};
