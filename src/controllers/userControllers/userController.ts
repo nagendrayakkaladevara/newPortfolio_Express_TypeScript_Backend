@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Blog, { IBlog } from "../../models/blogModel";
-import { blogIdSchema } from "../../utils/validations/v1UserValidations/userValidations";
+import { blogIdSchema, contactSchema } from "../../utils/validations/v1UserValidations/userValidations";
+import Contact from "../../models/contactsModel";
 // import redisClient from "../../utils/redisClient";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
@@ -113,3 +114,25 @@ export const getBlogById = async (req: Request, res: Response): Promise<void> =>
         res.status(500).json({ message: "Internal server error!" });
     }
 };
+
+
+export const postContact = async (req: Request, res: Response): Promise<void> => {
+    try {
+
+        const validation = contactSchema.safeParse(req.body);
+        if (!validation.success) {
+            res.status(400).json({ message: validation.error.errors[0].message });
+            return
+        }
+
+        const newContact = await Contact.create(validation.data);
+
+        res.status(201).json({
+            message: "Contact successfully created!",
+            contact: newContact,
+        });
+    } catch (error) {
+        console.error("🚀 ~ Error creating contact:", error);
+        res.status(500).json({ message: "Internal server error!" });
+    }
+}
