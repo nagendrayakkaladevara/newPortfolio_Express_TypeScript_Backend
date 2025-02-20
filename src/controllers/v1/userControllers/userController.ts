@@ -24,7 +24,7 @@ export const getBlogsCatalog = async (req: Request, res: Response): Promise<void
 
         if (blogsCache && now - lastCacheTime < CACHE_DURATION) {
             console.log("Serving from cache");
-            res.status(200).json(blogsCache);
+            res.status(200).json({ message: "Serving from cache!", blogsCache });
             return;
         }
 
@@ -41,7 +41,7 @@ export const getBlogsCatalog = async (req: Request, res: Response): Promise<void
         blogsCache = modifiedResponse;
         lastCacheTime = now;
 
-        res.status(200).json(modifiedResponse);
+        res.status(200).json({ message: "Serving from DB!", modifiedResponse });
     } catch (error) {
         console.error("🚀 ~ getBlogsCatalog ~ error:", error);
         res.status(500).json({ message: "Internal server error!" });
