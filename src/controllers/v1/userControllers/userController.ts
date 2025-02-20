@@ -108,7 +108,7 @@ export const getBlogById = async (req: Request, res: Response): Promise<void> =>
             return;
         }
 
-        res.status(200).json(blog);
+        res.status(200).json({ message: "Serving from DB!", blog });
     } catch (error) {
         console.error("🚀 ~ Error fetching blog:", error);
         res.status(500).json({ message: "Internal server error!" });
