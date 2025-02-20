@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllBlogs, getBlogsCatalog, getBlogById, postContact } from "../../controllers/userControllers/userController";
+import { getAllBlogs, getBlogsCatalog, getBlogById, postContact } from "../../../controllers/v1/userControllers/userController";
 
 const router = express.Router();
 

@@ -4,10 +4,11 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import userRoutes from './routes/userRoutes/userRoutes';
+import userRoutes from './routes/v1/userRoutes/userRoutes';
+import adminRoutes from './routes/v1/admin/adminRoutes';
 
-import { basicAuth } from "./middlewares/basicAuth";
-import { rateLimiter } from "./middlewares/rateLimiter";
+import { basicAuth } from "./middlewares/v1/basicAuth";
+import { rateLimiter } from "./middlewares/v1/rateLimiter";
 
 const app = express();
 
@@ -21,6 +22,7 @@ connectDB()
 
 // Routes
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/admin", adminRoutes);
 
 app.get('/testing', (req, res) => {
     res.status(200).json({
