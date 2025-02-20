@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import Blog, { IBlog } from "../../models/blogModel";
-import { blogIdSchema, contactSchema } from "../../utils/validations/v1UserValidations/userValidations";
-import Contact from "../../models/contactsModel";
+import Blog, { IBlog } from "../../../models/v1/blogModel";
+import { blogIdSchema, contactSchema } from "../../../utils/validations/v1UserValidations/userValidations";
+import Contact from "../../../models/v1/contactsModel";
 // import redisClient from "../../utils/redisClient";
 
 export const getAllBlogs = async (req: Request, res: Response) => {
