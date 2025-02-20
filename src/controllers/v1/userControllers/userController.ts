@@ -16,7 +16,7 @@ export const getAllBlogs = async (req: Request, res: Response) => {
 
 let blogsCache: any[] | null = null;
 let lastCacheTime: number = 0;
-const CACHE_DURATION = 5 * 60 * 1000;
+const CACHE_DURATION = 15 * 60 * 1000;
 
 export const getBlogsCatalog = async (req: Request, res: Response): Promise<void> => {
     try {
