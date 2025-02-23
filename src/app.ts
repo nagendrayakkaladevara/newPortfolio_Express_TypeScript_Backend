@@ -14,14 +14,15 @@ import { rateLimiter } from "./middlewares/v1/rateLimiter";
 const app = express();
 
 // Middleware
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use(rateLimiter);
 
-app.use('/', (req, res) => {
+// Public Route 
+app.get("/", (req, res) => {
     res.status(200).json({
         message: "🚀 Welcome to My API!",
-        description: "This is the backend for my portfolio, built with Express, TypeScript, and MongoDB. API's are secured with Basic Auth, optimized with Redis caching, and validated using Zod.",
+        description: "This is the backend for my portfolio, built with Express, TypeScript, and MongoDB. APIs are secured with Basic Auth, optimized with Redis caching, and validated using Zod.",
         techStack: ["Express.js", "TypeScript", "MongoDB"],
         features: [
             "✅ Zod for validation",
@@ -34,27 +35,26 @@ app.use('/', (req, res) => {
         documentation: "Coming Soon... 📜",
         uptime: `${Math.floor(process.uptime())} seconds`,
         timestamp: new Date().toISOString(),
-        // funFact: "💡 Did you know? JavaScript was created in just 10 days! 🚀",
-        // tryIt: "🔗 API Playground: [Your API endpoint here]",
         status: "API is up and running! 🎉"
     });
 });
 
+// authentication
 app.use(basicAuth);
 
-// db connection
-connectDB()
+// DB Connection
+connectDB();
 
 // Routes
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/admin", adminRoutes);
 
+// Test Route
 app.get('/testing', (req, res) => {
-    res.status(200).json({
-        mes: "working"
-    })
-})
+    res.status(200).json({ mes: "working" });
+});
 
+// 404 Handler
 app.all("*", (req, res) => {
     console.warn(`⚠️ Route not found: ${req.method} ${req.originalUrl}`);
     res.status(404).json({ message: `Route ${req.originalUrl} not found!` });
